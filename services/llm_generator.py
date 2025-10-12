@@ -24,6 +24,18 @@ class LLMGenerator:
 
         # Explicit behavior: if the base_url looks like AI Pipe, pass it
         if base_url and "aipipe" in base_url:
+            
+            # --- START FIX ---
+            # The base_url might be incorrectly set to include the full endpoint path.
+            # We strip it here to prevent the OpenAI client from doubling the path.
+            if base_url.endswith("/chat/completions"):
+                original_url = base_url
+                base_url = base_url.rsplit("/chat/completions", 1)[0]
+                logger.warning(
+                    f"Corrected malformed AI Pipe base_url from: {original_url} to: {base_url}"
+                )
+            # --- END FIX ---
+
             logger.info(f"Using AI Pipe endpoint: {base_url}")
             self.client = OpenAI(api_key=api_key, base_url=base_url)
         else:

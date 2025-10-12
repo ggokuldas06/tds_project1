@@ -1,0 +1,17 @@
+{
+  "email": "24f2008926@ds.study.iitm.ac.in",
+  "secret": "APPLE1234",
+  "task": "calculator-basic-001",
+  "round": 1,
+  "nonce": "abcd-1234",
+  "brief": "Create a simple calculator web app that can perform addition, subtraction, multiplication, and division on two numbers entered by the user. Display the result dynamically on the page.",
+  "checks": [
+    "Repo has MIT license",
+    "README.md includes setup and usage instructions",
+    "Page contains input fields for two numbers",
+    "Page contains buttons for +, -, ×, ÷ operations",
+    "Result updates dynamically without page reload"
+  ],
+  "evaluation_url": "http://localhost:8000/evaluate",
+  "attachments": []
+}

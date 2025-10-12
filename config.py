@@ -9,7 +9,6 @@ class Settings(BaseSettings):
     # Student credentials
     student_email: str
     student_secret: str
-    
     # GitHub configuration
     github_token: str
     github_username: str
