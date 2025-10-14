@@ -74,13 +74,6 @@ async def build_and_deploy(
     logger.info(f"Received task request: {request.task} (round {request.round})")
     
     # Validate email
-    if request.email != settings.student_email:
-        logger.warning(f"Email mismatch: {request.email} != {settings.student_email}")
-        raise HTTPException(
-            status_code=403,
-            detail="Email does not match configured student email"
-        )
-    
     # Validate secret
     if request.secret != settings.student_secret:
         logger.warning("Invalid secret provided")
