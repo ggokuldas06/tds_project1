@@ -1,6 +1,6 @@
 {
-  "email": "24f2008926@ds.study.iitm.ac.in",
-  "secret": "APPLE1234",
+  "email": "email@ds.study.iitm.ac.in",
+  "secret": "secret",
   "task": "calculator-basic-001",
   "round": 1,
   "nonce": "abcd-1234",
