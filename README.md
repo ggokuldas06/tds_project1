@@ -1,85 +1,100 @@
-Automated App Builder, Deployer & Evaluator API
+# Automated App Builder, Deployer & Evaluator API
 
-This project implements a complete automated workflow for building, deploying, updating, and evaluating web applications based on instructor-provided JSON task requests. It is designed for an educational setting where students receive programmatic tasks, generate an app using an LLM, publish it, and report build metadata for automated assessment.
+This project implements an automated pipeline that receives instructor-generated tasks, builds a corresponding web application using LLM assistance, deploys it to GitHub Pages, and reports metadata back to an evaluation service.
 
--> Overview
+It supports multi-round workflows (Build → Evaluate → Revise).
 
-The API accepts structured POST requests describing a task (brief, checks, attachments, and metadata).
-For each request, the system:
+## 🔗 Live API Endpoint
 
-Validates the secret provided in the task request.
+**https://tds-project1-c0n2.onrender.com**
 
-Generates an application using LLM assistance based on the task brief.
+---
 
-Creates a GitHub repository, adds required files (e.g., MIT license, README), and deploys via GitHub Pages.
+## 🚀 Project Overview
 
-Reports build metadata (repo URL, commit SHA, pages URL) back to the provided evaluation endpoint.
+The API receives a JSON task request containing:
 
-Handles Round 2 revision tasks, updates the existing repo, and re-deploys.
+- **brief** – description of the app to generate
+- **attachments** – data-URI files to include
+- **checks** – evaluation criteria
+- **secret** – student-provided authentication token
+- **task / round / nonce** – identifiers for tracking
+- **evaluation_url** – where to send build metadata
 
-This supports a complete build–evaluate–revise loop required by the instructors’ automation scripts.
+Upon receiving the request, the system:
 
-🔗 API Endpoint
+1. **Validates the secret**
+2. **Generates the app** using LLM-driven code creation
+3. **Creates a public GitHub repository**
+4. **Adds an MIT License and README**
+5. **Deploys the project using GitHub Pages**
+6. **Reports repo and deployment details** back to the evaluation URL
+7. For Round 2, **updates the existing repo** and redeploys
 
-Your deployment is available at:
+---
 
-https://tds-project1-c0n2.onrender.com
+## 📡 API Usage
 
-The API accepts JSON POST requests:
+Send a POST request:
 
+```bash
 curl -X POST https://tds-project1-c0n2.onrender.com \
   -H "Content-Type: application/json" \
-  -d '{"brief": "...", "secret": "...", ...}'
+  -d '{"brief": "...", "secret": "...", "task": "...", "round": 1}'
+```
 
+A `200 OK` JSON response is returned upon successful processing.
 
-The server returns a JSON 200 response on success.
+---
 
--> Features
+## 🛠 Core Features
 
-Secret-validated task processing
+- Secret-protected request handling
+- Data-URI attachment parsing
+- LLM-generated application scaffolding
+- Automated GitHub repository creation
+- MIT License insertion
+- GitHub Pages deployment with status verification
+- Evaluation callback with exponential retry
+- Round-based revision and redeployment workflow
 
-Attachment parsing (data URIs)
+---
 
-LLM-assisted code generation
+## 📁 Repository Output Structure
 
-GitHub repo creation & configuration
+Each generated repo includes:
 
-Automatic MIT license insertion
+```
+/LICENSE            # MIT License
+/README.md          # Professional documentation
+/index.html         # App entry point
+/assets/...         # Any generated or attachment-based assets
+```
 
-GitHub Pages deployment & verification
+GitHub Pages is enabled for every build.
 
-Evaluation metadata callback with retry logic
+---
 
-Round-based updates (round 1 → round 2)
+## 📤 Evaluation Callback Format
 
-📁 Repository Output
+Once deployed, the API sends:
 
-Each generated repository includes:
-
-index.html and supporting code for the requested app
-
-LICENSE (MIT)
-
-Professional README.md describing the generated project
-
-Clean commit history with no leaked secrets
-
-Public GitHub Pages deployment
-
--> Evaluation Callback Format
-
-The API reports results back using:
-
+```json
 {
   "email": "...",
   "task": "...",
   "round": 1,
   "nonce": "...",
-  "repo_url": "...",
-  "commit_sha": "...",
-  "pages_url": "..."
+  "repo_url": "https://github.com/user/repo",
+  "commit_sha": "abc123",
+  "pages_url": "https://user.github.io/repo/"
 }
+```
 
+This is POSTed to the provided `evaluation_url`.
 
-Returned to: evaluation_url provided in the task.
+---
 
+## 📄 License
+
+This project is licensed under the MIT License.
