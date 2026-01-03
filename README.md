@@ -95,6 +95,3 @@ This is POSTed to the provided `evaluation_url`.
 
 ---
 
-## 📄 License
-
-This project is licensed under the MIT License.
